@@ -1,0 +1,2 @@
+D:/Work/99.temp/face_recognition-master/CMakeFiles/ALL_BUILD.dir
+D:/Work/99.temp/face_recognition-master/CMakeFiles/ZERO_CHECK.dir
