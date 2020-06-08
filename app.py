@@ -53,8 +53,8 @@ def getData(encodings, names):
             # Get the face encodings for the face in each image file 
             face = face_recognition.load_image_file( 
                 dir + person + "/" + person_img) 
-            face_bounding_boxes = face_recognition.face_locations(face) 
-            # face_bounding_boxes = face_recognition.face_locations(face,number_of_times_to_upsample=0, model="cnn") 
+            # face_bounding_boxes = face_recognition.face_locations(face) 
+            face_bounding_boxes = face_recognition.face_locations(face,number_of_times_to_upsample=0, model="cnn") 
   
             # If training image contains exactly one face 
             if len(face_bounding_boxes) == 1: 
