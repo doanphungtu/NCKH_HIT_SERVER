@@ -6,16 +6,12 @@ from PIL import Image
 import io,os,sys
 encodings = []
 names =[]
-clf = []
 app = Flask(__name__)
-student = {
-    
-}
+student = face_recognition.getlistsv()
 @app.route('/check', methods=['POST'])
 def check():
     global encodings
     global names
-    global clf
     name = []
     image = request.files['image']
     img = Image.open(image)
@@ -33,12 +29,15 @@ def check():
         if matches[best_match_index] and face_distances[best_match_index]< 0.4:
             name = names[best_match_index]
         if name != "Unknown":
-            student[name] = "1"
+            student[str(name)]["check"] = "1"
+            face_recognition.setlistsv(student)
     except Exception as e: 
         print(e)
         name = "Unknown"
-    return {"name": name,
-            "listStuden": student}
+    return {
+      "name": student[str(name)]["name"],
+      "vt": name
+    }
 def getData(encodings, names):
     dir = "image/"
     # Load a sample picture and learn how to recognize it.
@@ -62,6 +61,9 @@ def getData(encodings, names):
             else: 
                 print(person + "/" + person_img + " can't be used for training") 
     return  encodings,names
-[encodings,names] = getData(encodings, names)
+[encodings, names] = getData(encodings, names)
+@app.route('/getallsv', methods=['POST'])
+def getallsv():
+    return face_recognition.getlistsv()
 if __name__ == '__main__':
     app.run(host= '0.0.0.0')
