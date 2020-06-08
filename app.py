@@ -1,4 +1,4 @@
-from flask import Flask,request
+from flask import Flask,request,jsonify
 import face_recognition
 import cv2
 import numpy as np
@@ -7,12 +7,13 @@ import io,os,sys
 encodings = []
 names =[]
 app = Flask(__name__)
-student = face_recognition.getlistsv()
+student = face_recognition.getlistsv_train()
 @app.route('/check', methods=['POST'])
 def check():
     global encodings
     global names
     name = []
+    cl = []
     image = request.files['image']
     img = Image.open(image)
     img = np.array(img)
@@ -34,9 +35,12 @@ def check():
     except Exception as e: 
         print(e)
         name = "Unknown"
+    cl = name
+    if cl != "Unknown":
+      cl = student[str(name)]["name"]
     return {
-      "name": student[str(name)]["name"],
-      "vt": name
+      "name": cl,
+      "vt": str(name)
     }
 def getData(encodings, names):
     dir = "image/"
@@ -50,6 +54,7 @@ def getData(encodings, names):
             face = face_recognition.load_image_file( 
                 dir + person + "/" + person_img) 
             face_bounding_boxes = face_recognition.face_locations(face) 
+            # face_bounding_boxes = face_recognition.face_locations(face,number_of_times_to_upsample=0, model="cnn") 
   
             # If training image contains exactly one face 
             if len(face_bounding_boxes) == 1: 
@@ -64,6 +69,6 @@ def getData(encodings, names):
 [encodings, names] = getData(encodings, names)
 @app.route('/getallsv', methods=['POST'])
 def getallsv():
-    return face_recognition.getlistsv()
+    return jsonify(face_recognition.getlistsv())
 if __name__ == '__main__':
     app.run(host= '0.0.0.0')

@@ -5,4 +5,4 @@ __email__ = 'ageitgey@gmail.com'
 __version__ = '1.2.3'
 
 from .api import load_image_file, face_locations, batch_face_locations, face_landmarks, face_encodings, compare_faces, face_distance, _raw_face_locations
-from .list_sv import getlistsv,setlistsv
+from .list_sv import getlistsv,setlistsv,getlistsv_train
