@@ -38,33 +38,28 @@ def check():
     cl = name
     if cl != "Unknown":
       cl = student[str(name)]["name"]
+    else:
+      cl="Không nhận diện được"
     return {
       "name": cl,
       "vt": str(name)
     }
 def getData(encodings, names):
     dir = "image/"
-    # Load a sample picture and learn how to recognize it.
     train_dir = os.listdir(dir)
     for person in train_dir: 
         pix = os.listdir(dir + person) 
-        # Loop through each training image for the current person 
         for person_img in pix: 
-            # Get the face encodings for the face in each image file 
             face = face_recognition.load_image_file( 
                 dir + person + "/" + person_img) 
-            # face_bounding_boxes = face_recognition.face_locations(face) 
-            face_bounding_boxes = face_recognition.face_locations(face,number_of_times_to_upsample=0, model="cnn") 
-  
-            # If training image contains exactly one face 
+            # face_bounding_boxes = face_recognition.face_locations(face,number_of_times_to_upsample=0, model="cnn") 
+            face_bounding_boxes = face_recognition.face_locations(face) 
             if len(face_bounding_boxes) == 1: 
                 face_enc = face_recognition.face_encodings(face,face_bounding_boxes)[0] 
-                # Add face encoding for current image  
-                # with corresponding label (name) to the training data 
                 encodings.append(face_enc) 
-                names.append(person) 
+                names.append(person)
             else: 
-                print(person + "/" + person_img + " can't be used for training") 
+                print(person + "/" + person_img + " khong the sd de training") 
     return  encodings,names
 [encodings, names] = getData(encodings, names)
 @app.route('/getallsv', methods=['POST'])
