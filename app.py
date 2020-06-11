@@ -20,7 +20,7 @@ def check():
     try:
         face_reg_encoding = face_recognition.face_encodings(img)
         if len(face_reg_encoding) == 0:
-            return {"msg" : "không tìm thấy người nào trong ảnh"}
+            return {"msg" : "Khong tim thay nguoi trong anh"}
         else:
             face_reg_encoding = face_reg_encoding[0]
         matches = face_recognition.compare_faces(encodings, face_reg_encoding)
@@ -39,7 +39,7 @@ def check():
     if cl != "Unknown":
       cl = student[str(name)]["name"]
     else:
-      cl="Không nhận diện được"
+      cl="Unknown"
     return {
       "name": cl,
       "vt": str(name)
